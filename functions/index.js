@@ -20,4 +20,3 @@ users.use('/', userRoute);
 
 // Exports
 exports.users = functions.https.onRequest(users);
-
