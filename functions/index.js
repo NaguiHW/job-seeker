@@ -7,7 +7,7 @@ const users = express();
 const jobs = express();
 
 // Middlewares
-users.use(cors());
+users.use(cors({ origin: true }));
 users.use(express.json());
 // jobs.use(cors());
 // jobs.use(express.json());
@@ -20,4 +20,3 @@ users.use('/', userRoute);
 
 // Exports
 exports.users = functions.https.onRequest(users);
-
