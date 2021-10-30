@@ -1,11 +1,12 @@
+import { Link } from 'react-router-dom';
 import './index.scss';
 
 const Navbar = () => (
   <nav>
     <div>
-      <h1><a href="/">Job Seeker</a></h1>
+      <h1><Link to="/">Job Seeker</Link></h1>
       <ul>
-        <li><a href="/">Users</a></li>
+        <li><Link to="/users">Users</Link></li>
         <li><a href="/">Jobs</a></li>
       </ul>
     </div>
