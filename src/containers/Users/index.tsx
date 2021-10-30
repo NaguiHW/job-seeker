@@ -34,7 +34,7 @@ const Users = () => {
         setLoading(false);
       }).catch(err => {
         console.error(err);
-      })
+      });
   }, [])
 
   return (

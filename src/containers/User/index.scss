@@ -1,0 +1,16 @@
+.user {
+  max-width: 1200px;
+  min-width: 400px;
+  margin: 0 auto;
+  padding: 15px 0 25px;
+  display: flex;
+  
+  .info {
+    width: 920px;
+    margin: 10px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+}

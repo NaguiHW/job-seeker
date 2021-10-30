@@ -1,6 +1,7 @@
 import RoomIcon from '@mui/icons-material/Room';
 import './index.scss';
 import profile from '../../assets/images/user.webp';
+import { Link } from 'react-router-dom';
 
 const UserMini = (
   {
@@ -8,13 +9,13 @@ const UserMini = (
     picture,
     locationName,
     professionalHeadline,
-    username
+    username,
   } : {
     name: string | undefined,
     picture: string | undefined,
     locationName: string | undefined,
     professionalHeadline: string | undefined,
-    username: string | undefined,
+    username?: string | undefined,
   }
 ) => (
   <div className="user-mini">
@@ -31,7 +32,7 @@ const UserMini = (
     <div className="headline">
       <p>{professionalHeadline}</p>
     </div>
-    <button type="button">More info</button>
+    {username && <Link to={`/users/${username}`}><button type="button">More info</button></Link>}
   </div>
 );
 
