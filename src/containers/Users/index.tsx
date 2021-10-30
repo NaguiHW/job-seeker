@@ -28,7 +28,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .post('http://localhost:5001/job-seeker-3fe44/us-central1/users/')
+      .post('https://us-central1-job-seeker-3fe44.cloudfunctions.net/users/')
       .then(resp => {
         setUsers(resp.data.results);
         setLoading(false);

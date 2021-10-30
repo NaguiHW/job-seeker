@@ -56,7 +56,7 @@ const User = () => {
   
   useEffect(() => {
     axios
-      .get(`http://localhost:5001/job-seeker-3fe44/us-central1/users/${username}`)
+      .get(`https://us-central1-job-seeker-3fe44.cloudfunctions.net/users/${username}`)
       .then(resp => {
         setUser(resp.data.person);
 
