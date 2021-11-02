@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import Lottie from 'react-lottie';
 import axios from 'axios';
 import animationData from '../../assets/lotties/load.json';
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import UserMini from "../../components/UserMini";
 import he from 'he';
 import Section from "../../components/Section";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import InfoIcon from '@mui/icons-material/Info';
 import './index.scss';
+import SectionList from "../../components/SectionList";
 
 interface User {
   name: string;
@@ -104,13 +105,11 @@ const User = () => {
               title="Biography"
               icon={<AccountBoxIcon />}
               content={bio(user.summaryOfBio ? user.summaryOfBio : '-')}
-              type="info"
             />
-            <Section
+            <SectionList
               title="Strengths"
               icon={<InfoIcon />}
               list={strength}
-              type="list"
             />
           </div>
         </div>
