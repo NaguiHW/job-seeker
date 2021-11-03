@@ -13,10 +13,13 @@ const App = () => (
         <Route exact path="/">
           <Home />
         </Route>
-        <Route exact path="/users">
+        <Route exact path="/users/:offset">
           <Users />
         </Route>
-        <Route exact path="/users/:username">
+        <Route exact path="/users/">
+          <Users />
+        </Route>
+        <Route exact path="/user/:username">
           <User />
         </Route>
       </Switch>
