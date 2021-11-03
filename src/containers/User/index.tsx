@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import Lottie from 'react-lottie';
-import axios from 'axios';
+import axios from '../../axios';
 import animationData from '../../assets/lotties/load.json';
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom";
 import UserMini from "../../components/UserMini";
 import he from 'he';
 import Section from "../../components/Section";
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import InfoIcon from '@mui/icons-material/Info';
 import './index.scss';
+import SectionList from "../../components/SectionList";
 
 interface User {
   name: string;
@@ -32,7 +33,7 @@ const User = () => {
       name: '',
     }
   })
-  const [strength, setStrength] = useState<{master: [], expert: [], proficient: []}>({
+  const [strengths, setStrengths] = useState<{master: [], expert: [], proficient: []}>({
     master: [],
     expert: [],
     proficient: [],
@@ -56,32 +57,10 @@ const User = () => {
   
   useEffect(() => {
     axios
-      .get(`https://us-central1-job-seeker-3fe44.cloudfunctions.net/users/${username}`)
+      .get(`/users/${username}`)
       .then(resp => {
         setUser(resp.data.person);
-
-        const values: any = {
-          master: [],
-          expert: [],
-          proficient: [],
-        };
-
-        resp.data.strengths.forEach((strength: { proficiency: string; }) => {
-          if (strength.proficiency === 'master') {
-            values.master.push(strength);
-          }
-
-          if (strength.proficiency === 'expert') {
-            values.expert.push(strength);
-          }
-
-          if (strength.proficiency === 'proficient') {
-            values.proficient.push(strength);
-          }
-        });
-
-        setStrength(values);
-
+        setStrengths(resp.data.strengths);
         setLoading(false);
       }).catch(err => {
         console.error(err);
@@ -104,13 +83,11 @@ const User = () => {
               title="Biography"
               icon={<AccountBoxIcon />}
               content={bio(user.summaryOfBio ? user.summaryOfBio : '-')}
-              type="info"
             />
-            <Section
+            <SectionList
               title="Strengths"
               icon={<InfoIcon />}
-              list={strength}
-              type="list"
+              list={strengths}
             />
           </div>
         </div>

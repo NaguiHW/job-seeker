@@ -32,7 +32,7 @@ const UserMini = (
     <div className="headline">
       <p>{professionalHeadline}</p>
     </div>
-    {username && <Link to={`/users/${username}`}><button type="button">More info</button></Link>}
+    {username && <Link to={`/user/${username}`}><button type="button">More info</button></Link>}
   </div>
 );
 
