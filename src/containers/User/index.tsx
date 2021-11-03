@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Lottie from 'react-lottie';
-import axios from 'axios';
+import axios from '../../axios';
 import animationData from '../../assets/lotties/load.json';
 import { useParams } from "react-router-dom";
 import UserMini from "../../components/UserMini";
@@ -33,7 +33,7 @@ const User = () => {
       name: '',
     }
   })
-  const [strength, setStrength] = useState<{master: [], expert: [], proficient: []}>({
+  const [strengths, setStrengths] = useState<{master: [], expert: [], proficient: []}>({
     master: [],
     expert: [],
     proficient: [],
@@ -57,32 +57,10 @@ const User = () => {
   
   useEffect(() => {
     axios
-      .get(`https://us-central1-job-seeker-3fe44.cloudfunctions.net/users/${username}`)
+      .get(`/users/${username}`)
       .then(resp => {
         setUser(resp.data.person);
-
-        const values: any = {
-          master: [],
-          expert: [],
-          proficient: [],
-        };
-
-        resp.data.strengths.forEach((strength: { proficiency: string; }) => {
-          if (strength.proficiency === 'master') {
-            values.master.push(strength);
-          }
-
-          if (strength.proficiency === 'expert') {
-            values.expert.push(strength);
-          }
-
-          if (strength.proficiency === 'proficient') {
-            values.proficient.push(strength);
-          }
-        });
-
-        setStrength(values);
-
+        setStrengths(resp.data.strengths);
         setLoading(false);
       }).catch(err => {
         console.error(err);
@@ -109,7 +87,7 @@ const User = () => {
             <SectionList
               title="Strengths"
               icon={<InfoIcon />}
-              list={strength}
+              list={strengths}
             />
           </div>
         </div>

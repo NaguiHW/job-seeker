@@ -10,15 +10,11 @@ import { useParams } from "react-router";
 import './index.scss';
 
 interface Users {
-  users: {
-    name: string;
-    picture: string;
-    locationName: string;
-    professionalHeadline: string;
-    username: string;
-  }[];
-  total: number;
-  size: number;
+  name: string;
+  picture: string;
+  locationName: string;
+  professionalHeadline: string;
+  username: string;
 };
 
 const defaultOptions = {
@@ -31,36 +27,37 @@ const defaultOptions = {
 }
 
 const Users = () => {
-  const [users, setUsers] = useState<Users>({
-    users: [{
-      name: '',
-      picture: '',
-      locationName: '',
-      professionalHeadline: '',
-      username: '',
-    }],
-    total: 0,
-    size: 0,
-  });
+  const [users, setUsers] = useState<Users[]>([{
+    name: '',
+    picture: '',
+    locationName: '',
+    professionalHeadline: '',
+    username: '',
+  }]);
   const [loading, setLoading] = useState(true);
   const [next, setNext] = useState('');
   const [previous, setPrevious] = useState('');
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState(0);
   const { offset }: { offset: string } = useParams();
 
   const getUsers = () => {
     setLoading(true);
+    console.log(offset);
     axios
-      .post(`/users/?size=25${offset && `&${offset}`}`)
+      .post(`/users/${offset !== undefined ? `?${offset}` : ''}`)
       .then(resp => {
-        setUsers(resp.data);
+        setUsers(resp.data.users);
         setNext(resp.data.next);
         setPrevious(resp.data.previous);
+        setTotalPages(resp.data.totalPages);
+        setCurrentPage(resp.data.currentPage);
         setLoading(false);
       }).catch(err => {
         console.error(err);
         setLoading(false);
       });
-  }
+  };
 
   useEffect(() => {
     getUsers();
@@ -70,24 +67,31 @@ const Users = () => {
     loading
       ? <Lottie options={defaultOptions} height={400} width={400} />
       : (
-        <div className="users">
-          {
-            users.users.map(user => (
-              <UserMini
-                name={user.name}
-                picture={user.picture}
-                locationName={user.locationName}
-                professionalHeadline={user.professionalHeadline}
-                username={user.username}
-              />
-            ))
-          }
+        <>
           <div className="next-prev">
-            {previous && <Link to={`/users/previous=${previous}`}><NavigateBeforeIcon /></Link>}
-            <p>{users.total}</p>
-            {next && <Link to={`/users/next=${next}`}><NavigateNextIcon /></Link>}
+            {previous && <Link to={`/users/previous=${previous}`}><NavigateBeforeIcon className="prev" /></Link>}
+            <p> {currentPage} of {Math.floor(totalPages)} pages</p>
+            {next && <Link to={`/users/next=${next}`}><NavigateNextIcon className="next" /></Link>}
           </div>
-        </div>
+          <div className="users">
+            {
+              users.map(user => (
+                <UserMini
+                  name={user.name}
+                  picture={user.picture}
+                  locationName={user.locationName}
+                  professionalHeadline={user.professionalHeadline}
+                  username={user.username}
+                />
+              ))
+            }
+          </div>
+          <div className="next-prev last">
+            {previous && <Link to={`/users/previous=${previous}`}><NavigateBeforeIcon className="prev" /></Link>}
+            <p> {currentPage} of {totalPages} pages</p>
+            {next && <Link to={`/users/next=${next}`}><NavigateNextIcon className="next" /></Link>}
+          </div>
+        </>
       )
   )
 };

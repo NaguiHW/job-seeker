@@ -50,16 +50,19 @@ const getUser = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
   try {
-    const { size, next, previous } = req.query;
-    const users = await fetch(`https://search.torre.co/people/_search/?size=${size}${next ? `&after=${next}` : ''}${previous ? `&before=${previous}` : ''}`, {
+    const { next, previous } = req.query;
+    const users = await fetch(`https://search.torre.co/people/_search/?size=25${next ? `&after=${next}` : ''}${previous ? `&before=${previous}` : ''}`, {
       method: 'POST',
     });
 
     const data = await users.json();
 
+    const totalPages = data.total / 25;
+    const currentPage = (data.offset / 25) + 1;
+
     res.status(200).json({
-      total: data.total,
-      size: data.size,
+      totalPages,
+      currentPage,
       users: data.results,
       next: data.pagination.next,
       previous: data.pagination.previous,
